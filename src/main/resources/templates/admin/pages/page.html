@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="/fragments/head :: head-admin"></head>
+
+  <body>
+    <nav th:replace="/fragments/nav :: nav-admin"></nav>
+
+    <div class="container mt-5" id="wrapper">
+      <div class="display-2 page-heading">Pages</div>
+      <a href="/admin/pages/add" class="btn btn-primary">추가하기</a>
+      <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
+
+      <div th:if="${!pages.empty}">
+        <table class="table" id="pages">
+          <tr class="home">
+            <th>제 목</th>
+            <th>슬러그</th>
+            <th>수 정</th>
+            <th>삭 제</th>
+          </tr>
+          <tr th:each="page: ${pages}" th:id="'id_'+${page.id}" th:class="${page.slug}">
+            <td th:text="${page.title}"></td>
+            <td th:text="${page.slug}"></td>
+            <td><a th:href="@{'/admin/pages/edit/' + ${page.id}}">수정</a></td>
+            <td th:if="${page.slug != 'home'}">
+              <a th:href="@{'/admin/pages/delete/' + ${page.id}}" class="deleteConfirm">삭제</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div th:if="${pages.empty}">
+        <div class="display-4">현재 페이지가 없습니다.</div>
+      </div>
+    </div>
+  </body>
+  <footer th:replace="/fragments/footer :: footer"></footer>
+  <script>
+    let token = $("meta[name='_csrf']").attr('content');
+    let header = $("meta[name='_csrf_header']").attr('content');
+    $(document).ajaxSend(function (e, xhr, options) {
+      xhr.setRequestHeader(header, token);
+    });
+
+    $('table#pages').sortable({
+      items: 'tr:not(.home)',
+      placeholder: 'ui-state-highlight',
+      update: function () {
+        //순서가 바뀔때 이벤트
+        let ids = $('table#pages').sortable('serialize');
+        let url = '/cms/admin/pages/reorder';
+
+        $.post(url, ids, function (data) {
+          console.log(data);
+        });
+      },
+    });
+  </script>
+</html>

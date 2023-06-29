@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/head :: head"></head>
+
+  <body>
+    <nav th:replace="fragments/nav :: nav-index"></nav>
+
+    <div class="container-fluid mt-5">
+      <div class="row">
+        <div th:replace="fragments/categories :: categories"></div>
+        <div class="col"></div>
+        <div class="col-8" style="margin-right: 1cm">
+          <h2 class="display-3 mb-5">검색 결과</h2>
+
+          <div class="row">
+            <div class="col" th:each="product : ${productSearchResult}">
+              <div class="card" style="width: 300px; height: 400px">
+                <img
+                  class="card-img-top"
+                  th:src="@{'/image/' + ${product.image}}"
+                  alt="Product Image"
+                />
+                <div class="card-body">
+                  <h5 class="card-title" th:text="${product.name}" style="font-weight: bold"></h5>
+                  <p
+                    class="card-text"
+                    th:text="${product.price} + ' 원'"
+                    style="color: red; font-weight: bold"
+                  ></p>
+                </div>
+                <div class="card-footer">
+                  <div style="position: relative">
+                    <p>
+                      <a
+                        class="btn btn-primary addToCart"
+                        th:attr="data-id=${product.id}"
+                        th:href="@{'/cart/add/' + ${product.id}}"
+                      >
+                        장바구니 추가
+                      </a>
+                      <a class="btn btn-secondary" th:href="@{'/product/' + ${product.id}}">
+                        상세보기
+                      </a>
+                      <img class="ajaxLoader d-none" th:src="@{/image/ajax-loader.gif}" />
+                    </p>
+                    <div class="btn btn-sm btn-success hide productAdded">추가됨!</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col" th:each="book : ${bookSearchResult}">
+              <div class="card" style="width: 300px; height: 400px">
+                <img class="card-img-top" th:src="@{'/image/' + ${book.image}}" alt="Book Image" />
+                <div class="card-body">
+                  <h5 class="card-title" th:text="${book.name}" style="font-weight: bold"></h5>
+                  <p
+                    class="card-text"
+                    th:text="${book.price} + ' 원'"
+                    style="color: red; font-weight: bold"
+                  ></p>
+                </div>
+                <div class="card-footer">
+                  <div style="position: relative">
+                    <p>
+                      <a
+                        class="btn btn-primary addToCart"
+                        th:attr="data-id=${book.id}"
+                        th:href="@{'/cart/add/' + ${book.id}}"
+                      >
+                        장바구니 추가
+                      </a>
+                      <a class="btn btn-secondary" th:href="@{'/book/' + ${book.id}}"> 상세보기 </a>
+                      <img class="ajaxLoader d-none" th:src="@{/image/ajax-loader.gif}" />
+                    </p>
+                    <div class="btn btn-sm btn-success hide bookAdded">추가됨!</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 10px; margin-bottom: 15px">
+            <div class="col-12">
+              <form class="form-inline mt-2 mt-md-0" th:action="@{/search}" method="get">
+                <input
+                  class="form-control mr-sm-2"
+                  type="text"
+                  name="keyword"
+                  placeholder="검색어를 입력하세요"
+                  aria-label="Search"
+                />
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+                <a
+                  class="btn btn-outline-dark flex-shrink-0"
+                  type="button"
+                  th:href="@{${#httpServletRequest.getHeader('referer')} ?: '/'}"
+                >
+                  <i class="bi bi-back"></i>
+                  돌아가기
+                </a>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col"></div>
+      </div>
+    </div>
+
+    <footer th:replace="fragments/footer :: footer"></footer>
+
+    <script>
+      $('a.addToCart').click(function (e) {
+        e.preventDefault();
+
+        let $this = $(this); //제이쿼리 변수선언 this는 장바구니버튼( a태그 객체 )
+
+        let id = $this.attr('data-id');
+        let url = '/cart/add/' + id;
+
+        $.get(url, {}, function (data) {
+          //console.log(data);
+          $('div.cart').html(data);
+        }).done(function () {
+          $this.parent().parent().find('div.productAdded').fadeIn();
+          $this.parent().parent().find('div.bookAdded').fadeIn();
+          setTimeout(() => {
+            $this.parent().parent().find('div.productAdded').fadeIn();
+            $this.parent().parent().find('div.bookAdded').fadeIn();
+          }, 1000);
+        });
+      });
+    </script>
+  </body>
+</html>

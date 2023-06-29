@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="/fragments/head :: head-admin.">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+  </head>
+  <body>
+    <nav th:replace="fragments/nav :: nav-admin"></nav>
+
+    <div class="container mt-5">
+      <div class="display-2 page-heading">도서 추가</div>
+      <a href="/admin/books" class="btn btn-primary my-3">돌아가기</a>
+      <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
+
+      <form
+        method="post"
+        th:object="${book}"
+        th:action="@{/admin/books/add}"
+        enctype="multipart/form-data"
+      >
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+          입력 내용을 확인해주세요
+        </div>
+
+        <div class="form-group">
+          <label for="">이 름</label>
+          <input type="text" class="form-control" th:field="*{name}" placeholder="이름" />
+          <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="">도서설명</label>
+          <textarea
+            class="form-control"
+            rows="5"
+            th:field="*{description}"
+            placeholder=" 도서설명 "
+          ></textarea>
+          <span
+            class="error"
+            th:if="${#fields.hasErrors('description')}"
+            th:errors="*{description}"
+          ></span>
+        </div>
+
+        <div class="form-group">
+          <label for="">저 자</label>
+          <input type="text" class="form-control" th:field="*{author}" placeholder="저자명" />
+          <span class="error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="">출판사</label>
+          <input type="text" class="form-control" th:field="*{publisher}" placeholder="출판사명" />
+          <span
+            class="error"
+            th:if="${#fields.hasErrors('publisher')}"
+            th:errors="*{publisher}"
+          ></span>
+        </div>
+
+        <div class="form-group">
+          <label for="publicdate">출판일</label>
+          <input
+            type="text"
+            id="publicdate"
+            autocomplete="off"
+            readonly="readonly"
+            class="form-control"
+            th:field="*{publicdate}"
+            placeholder="출판일자"
+          />
+          <span
+            class="error"
+            th:if="${#fields.hasErrors('publicdate')}"
+            th:errors="*{publicdate}"
+          ></span>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2">상태</label>
+          <div class="col-sm-5">
+            <input type="radio" name="bookCondition" id="Paper" value="1" />
+            <label for="Paper">종이책</label>
+            <input type="radio" name="bookCondition" id="Audio" value="2" />
+            <label for="Audio">오디오북</label>
+            <input type="radio" name="bookCondition" id="EBook" value="3" />
+            <label for="EBook">E-Book</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="">이미지</label>
+          <input type="file" class="form-control" th:id="file" th:name="file" />
+          <img src="#" id="imgPreview" />
+        </div>
+
+        <div class="form-group">
+          <label for="">가 격</label>
+          <input type="text" class="form-control" th:field="*{price}" placeholder="가격(원)" />
+          <span class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="">카테고리</label>
+          <select th:field="*{categoryId}" class="form-control">
+            <option value="0">카테고리 선택</option>
+            <option
+              th:each="category : ${categories}"
+              th:value="${category.id}"
+              th:text="${category.name}"
+            ></option>
+          </select>
+          <span
+            class="error"
+            th:if="${#fields.hasErrors('categoryId')}"
+            th:errors="*{categoryId}"
+          ></span>
+        </div>
+
+        <button class="btn btn-danger">추 가</button>
+      </form>
+    </div>
+
+    <footer th:replace="/fragments/footer :: footer"></footer>
+    <script>
+      //html준비후 시작
+      $(function () {
+        $('#imgPreview').hide(); //처음에 보여줄 이미지가 없으므로 img태그를 숨김
+        // input에 파일이 올라올때(바뀔때 : change) readURL 함수를 실행합니다.
+        $('#file').change(function () {
+          readURL(this); //readURL에는 이 입력객체가 입력됨
+        });
+      });
+    </script>
+  </body>
+</html>

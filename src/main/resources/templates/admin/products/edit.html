@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="/fragments/head :: head-admin"></head>
+  <body>
+    <nav th:replace="fragments/nav :: nav-admin"></nav>
+
+    <div class="container mt-5">
+      <div class="display-2 page-heading" th:text="${product.name} + ' 수정'"></div>
+      <a href="/admin/products" class="btn btn-primary my-3">돌아가기</a>
+      <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
+
+      <form
+        method="post"
+        th:object="${product}"
+        th:action="@{/admin/products/edit}"
+        enctype="multipart/form-data"
+      >
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+          입력 내용을 확인해주세요
+        </div>
+
+        <div class="form-group">
+          <label for="">이 름</label>
+          <input type="text" class="form-control" th:field="*{name}" placeholder="이름" />
+          <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="">제품설명</label>
+          <textarea
+            class="form-control"
+            rows="5"
+            th:field="*{description}"
+            placeholder=" 제품설명 "
+          />
+          <span
+            class="error"
+            th:if="${#fields.hasErrors('description')}"
+            th:errors="*{description}"
+          ></span>
+        </div>
+
+        <div class="form-group">
+          <label for="">이미지</label>
+
+          <input type="file" class="form-control" th:id="file" th:name="file" />
+
+          <img src="#" id="imgPreview" />
+
+          <br /><br />
+
+          <label for="">현재 이미지</label>
+
+          <img th:src="@{'/image/'+${product.image}}" style="width: 200px" />
+        </div>
+
+        <div class="form-group">
+          <label for="">가 격</label>
+          <input type="text" class="form-control" th:field="*{price}" placeholder="가격(원)" />
+          <span class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="">카테고리</label>
+          <select th:field="*{categoryId}" class="form-control">
+            <option value="0">카테고리 선택</option>
+            <option
+              th:each="category : ${categories}"
+              th:value="${category.id}"
+              th:text="${category.name}"
+            ></option>
+          </select>
+          <span
+            class="error"
+            th:if="${#fields.hasErrors('categoryId')}"
+            th:errors="*{categoryId}"
+          ></span>
+        </div>
+        <input type="hidden" th:field="*{id}" th:value="${product.id}" />
+        <button class="btn btn-danger">수정하기</button>
+      </form>
+    </div>
+
+    <footer th:replace="/fragments/footer :: footer"></footer>
+    <script>
+      $(function () {
+        $('#imgPreview').hide(); // 처음에 보여줄 이미지가 없으므로 img 태그를 숨김
+
+        // input에 파일이 올라올 때 (바뀔 때: change) readURL 함수를 실행합니다.
+        $('#file').change(function () {
+          readURL(this); // readURL에는 이 입력 객체가 입력됨
+        });
+
+        // readURL 함수 정의
+        function readURL(input) {
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              $('#imgPreview').attr('src', e.target.result).show(); // 이미지를 미리보기로 보여주기 위해 img 태그의 src 속성을 변경하고 보이도록 설정합니다.
+            };
+
+            reader.readAsDataURL(input.files[0]); // 파일을 읽습니다.
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

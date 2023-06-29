@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="/fragments/head :: head-admin"></head>
+  <body>
+    <nav th:replace="/fragments/nav :: nav-admin"></nav>
+
+    <div class="container mt-5" id="wrapper">
+      <div class="display-2 page-heading">books</div>
+      <a href="/admin/books/add" class="btn btn-primary">추가하기</a>
+      <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
+
+      <div th:if="${!books.empty}">
+        <table class="table">
+          <tr>
+            <th>도서명</th>
+            <th>이미지</th>
+            <th>카테고리</th>
+            <th>가 격</th>
+            <th>수 정</th>
+            <th>삭 제</th>
+          </tr>
+          <tr th:each="book: ${books}">
+            <td>
+              <a th:href="@{'/admin/books/detail/' + ${book.id}}"
+                ><span th:text="${book.name}"></span
+              ></a>
+            </td>
+            <td>
+              <img th:src="@{'/image/'+${ book.image }}" style="height: 2em" />
+            </td>
+            <td th:text="${cats[__${book.categoryId}__]}"></td>
+            <td th:text="${book.price +'원'}"></td>
+            <td><a th:href="@{'/admin/books/edit/' + ${book.id}}">수정</a></td>
+            <td>
+              <a class="deleteConfirm" th:href="@{'/admin/books/delete/' + ${book.id}}">삭제</a>
+            </td>
+          </tr>
+        </table>
+
+        <!-- 부트스트랩 페이지네이션 -->
+        <nav class="mt-3" th:if="${count > perPage}">
+          <ul class="pagination">
+            <li class="page-item" th:if="${page > 0}">
+              <a
+                th:href="${#httpServletRequest.requestURI} + '?page=__${page-1}__'"
+                class="page-link"
+                >이전</a
+              >
+            </li>
+            <li
+              class="page-item"
+              th:each="number: ${#numbers.sequence(0, pageCount-1)}"
+              th:classappend="${page==number} ? 'active' : ''"
+            >
+              <a
+                th:href="${#httpServletRequest.requestURI} + '?page=__${number}__'"
+                class="page-link"
+                th:text="${number+1}"
+              ></a>
+            </li>
+            <li class="page-item" th:if="${page < pageCount-1}">
+              <a
+                th:href="${#httpServletRequest.requestURI} + '?page=__${page+1}__'"
+                class="page-link"
+                >다음</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div th:if="${books.empty}">
+        <div class="display-4">현재 도서가 없습니다.</div>
+      </div>
+    </div>
+  </body>
+
+  <footer th:replace="/fragments/footer :: footer"></footer>
+</html>

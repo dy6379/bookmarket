@@ -1,0 +1,20 @@
+<div class="col-3" th:fragment="categories">
+  <h3 class="display-4 my-3">categories</h3>
+  <div class="border-end bg-white" id="sidebar-wrapper">
+      <ul class="list-group">
+        <li class="list-group-item">
+        <a th:href="@{/category/all}" class="nav-link">All Products</a>
+      </li>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item list-group-item-action" th:each="category: ${categories}">
+        <a
+          class="nav-link"
+          th:href="@{'/category/' + ${category.slug}}"
+          th:text="${category.name}"
+        ></a>
+      </li>
+    </ul>
+  </div>
+
+  <div th:replace="fragments/cart_partial"></div>
+</div>

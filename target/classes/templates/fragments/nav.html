@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+    <nav th:fragment="nav-index" class="navbar navbar-expand-md navbar-dark bg-dark rounded">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/index"> <span class="bi bi-house"></span> 홈페이지 </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto mb-2 mb-md-0">
+            <li class="nav-item active" th:each="page : ${cpages}">
+              <a class="nav-link" th:href="@{'/' + ${page.slug}}" th:text="${page.title}"></a>
+            </li>
+          </ul>
+          <ul class="navbar-nav" th:if="${principal == null}">
+            <li class="nav-item active">
+              <a class="nav-link" th:href="@{'/register'}" th:text="가입하기"></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" th:href="@{'/login'}" th:text="로그인"></a>
+            </li>
+          </ul>
+          <form th:if="${principal != null}" th:action="@{/logout}" method="post">
+            <span class="text-white" th:text="${'사용자😶, ' + principal}"></span>
+            <button class="btn btn-secondary ml-2">로그아웃</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <nav th:fragment="nav-admin" class="navbar navbar-expand-md navbar-dark bg-dark rounded">
+      <div class="container-fluid">
+        <a class="navbar-brand" target="_blank" th:href="@{/}">
+          <span class="bi bi-person"></span> 관리자페이지</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link active" th:href="@{/admin/pages}">Pages</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" th:href="@{/admin/categories}">Categories</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" th:href="@{/admin/books}">Books</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" th:href="@{/admin/products}">Products</a>
+            </li>
+          </ul>
+          <form th:if="${principal != null}" th:action="@{/logout}" method="post">
+            <span class="text-white" th:text="${'🔰관리자, ' + principal}"></span>
+            <button class="btn btn-secondary ml-2">로그아웃</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </body>
+</html>

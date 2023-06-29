@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/head :: head"> </head>
+  <style>
+    .row {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      margin-right: -15px;
+      margin-left: -15px;
+    }
+  </style>
+  <body>
+    <div id="wrapper">
+      <div
+        class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center"
+        style="
+          background-image: url('/image/white.jpg');
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center;
+        "
+      >
+        <div class="col-md-5 p-lg-5 mx-auto my-5">
+          <h1 class="display-4 font-weight-normal">BookMarket</h1>
+          <p class="lead font-weight-normal">
+            책을 사랑하는 이들을 위한 온라인 서점과 독서 커뮤니티! 수많은 장르와 베스트셀러를 한
+            자리에서 만나보세요. 독서 도구부터 감상평까지, 여기서 모든 독서 경험을 함께 즐겨보세요!
+          </p>
+          <a class="btn btn-outline-secondary" href="/login">로그인</a>
+          <a class="btn btn-outline-secondary" href="/register">회원가입</a>
+          <a
+            th:href="@{|/category/all|}"
+            class="btn btn-outline-primary"
+            sec:authorize="isAuthenticated()"
+            th:if="${principal != null}"
+            th:text="이용하기"
+          ></a>
+        </div>
+        <div class="product-device box-shadow d-none d-md-block"></div>
+        <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
+      </div>
+
+      <div class="container marketing">
+        <!-- START THE FEATURETTES -->
+
+        <div class="jumbotron">
+          <h1>책의 세계를 탐험하는 홈페이지!</h1>
+          <h4>독서의 즐거움을 경험해보세요!</h4>
+          <br />
+          <p class="lead">
+            구매, 독서도구, 감상평까지 한 곳에서 독서의 매력을 새롭게 경험할 수 있습니다!
+            <br />
+            이제 모두 여기에서 즐겨보세요!
+            <br />
+            책의 세계를 여는 특별한 홈페이지에서 당신을 기다리고 있습니다!
+          </p>
+        </div>
+        <hr class="featurette-divider" />
+
+        <div class="row featurette">
+          <div class="col-md-7">
+            <h2 class="featurette-heading">
+              First Step <span class="text-muted">책과 독서 그리고 이야기</span>
+            </h2>
+            <p class="lead">
+              책은 우리에게 끝없는 상상력과 지식의 세계를 선사합니다. 독서는 그 세계로의 문을
+              열어줍니다. 우리는 다양한 이야기를 통해 새로운 경험을 할 수 있고, 다른 사람의 삶과
+              관점을 이해할 수 있습니다.
+            </p>
+            <p class="lead">
+              독서는 우리의 성장과 발전을 위한 필수적인 도구입니다. 그 안에 담긴 지혜와 아이디어는
+              우리를 영감으로 이끌어주고, 새로운 시야를 제공합니다. 독서는 우리를 더욱 창의적으로
+              만들어주며, 새로운 가능성을 발견할 수 있게 해줍니다.
+            </p>
+            <p class="lead">
+              이야기는 인간의 본성과 문화의 기반이 됩니다. 우리는 이야기를 통해 감정과 가치를
+              공유하고, 사회적인 연결과 소통을 이룹니다. 독서를 통해 우리는 다양한 이야기의 세계에
+              빠져들며, 새로운 경험과 인생의 풍요로움을 만끽할 수 있습니다.
+            </p>
+            <p class="lead">
+              책과 독서는 우리를 세상과 연결시켜주는 다리입니다. 우리는 책을 통해 다른 사람의
+              이야기를 듣고, 공감하며, 배우고 성장할 수 있습니다. 독서는 우리에게 새로운 시각과
+              이해를 제공하여 더욱 넓고 풍요로운 삶을 살게 해줍니다.
+            </p>
+            <p class="lead">
+              책과 독서는 우리의 마음과 영혼을 충전시켜줍니다. 그 안에 담긴 이야기들은 우리를
+              감동시키고, 위로하며, 위대한 변화를 일으킬 수 있습니다. 우리는 독서를 통해 자아를
+              발견하고, 세계와의 조화로움을 찾을 수 있습니다.
+            </p>
+          </div>
+          <div class="col-md-5">
+            <img
+              class="featurette-image img-fluid mx-auto"
+              data-src="holder.js/500x500/auto"
+              alt="500x500"
+              style="width: 500px; height: 600px"
+              src="/image/background.jpg"
+              data-holder-rendered="true"
+            />
+          </div>
+        </div>
+
+        <hr class="featurette-divider" />
+
+        <div class="row featurette">
+          <div class="col-md-7 order-md-2">
+            <h2 class="featurette-heading">
+              Second Step <span class="text-muted">리뷰와 감상평 그리고 댓글</span>
+            </h2>
+            <p class="lead">
+              이 책의 감상평과 댓글을 통해 다양한 시각과 해석을 접할 수 있습니다. 다른 독자들의
+              생각과 감정을 공유하며 책에 대한 다양한 관점을 알아갈 수 있습니다.
+            </p>
+            <p class="lead">
+              댓글과 감상평은 책을 선택할 때 도움이 됩니다. 다른 독자들이 어떤 점을 강조하고 어떤
+              장점을 언급하는지 확인하여 내게 맞는 책인지 판단할 수 있습니다.
+            </p>
+            <p class="lead">
+              이 책의 댓글들을 읽으면서 책의 메시지와 가치를 더욱 깊이 이해할 수 있습니다. 다양한
+              관점과 해석을 통해 책에 담긴 의미를 더욱 풍부하게 해석할 수 있습니다.
+            </p>
+            <p class="lead">
+              댓글과 감상평을 통해 책과 관련된 새로운 아이디어와 시각을 얻을 수 있습니다. 다른
+              독자들과의 대화와 의견 교환을 통해 새로운 지식과 통찰을 얻을 수 있습니다.
+            </p>
+            <p class="lead">
+              마지막으로, 댓글과 감상평을 작성하고 공유함으로써 독자들 사이에서 소통과 연결을 이뤄낼
+              수 있습니다. 독서 커뮤니티에서 다른 독자들과 소통하고 자신의 의견을 나누는 소중한
+              경험을 할 수 있습니다.
+            </p>
+          </div>
+          <div class="col-md-5 order-md-1">
+            <img
+              class="featurette-image img-fluid mx-auto"
+              data-src="holder.js/500x500/auto"
+              alt="500x500"
+              src="/image/message.jpg"
+              data-holder-rendered="true"
+              style="width: 500px; height: 500px"
+            />
+          </div>
+        </div>
+
+        <hr class="featurette-divider" />
+
+        <div class="row featurette">
+          <div class="col-md-7">
+            <h2 class="featurette-heading">
+              Third Step <span class="text-muted">독서를 위한 독서도구</span>
+            </h2>
+            <p class="lead">
+              독서 시간을 효율적으로 활용하고 싶다면, 타이머를 사용해보세요. 집중해서 책에 몰두할 수
+              있는 시간을 설정하고, 그 동안 다른 일에 방해받지 않도록 해보세요.
+            </p>
+            <p class="lead">
+              시각적인 도움이 필요하다면, 책갈피를 활용해보세요. 아름다운 디자인의 책갈피를 사용하면
+              읽은 페이지를 쉽게 찾을 수 있을 뿐만 아니라, 독서에 더욱 흥미를 느낄 수 있습니다.
+            </p>
+            <p class="lead">
+              책에 집중하기 위해 주변을 조용하게 만들고 싶다면, 소음 차단 헤드폰이나 귀마개를
+              사용해보세요. 주변 소음을 차단하여 몰입도 높은 독서 경험을 할 수 있습니다.
+            </p>
+            <p class="lead">
+              좋은 구절이나 인용구를 기억하고 싶다면, 감상평이나 메모장을 활용해보세요. 독서 중에
+              눈에 띄는 구절을 적어두면 나중에 다시 찾아볼 수 있으며, 자신만의 독서 기록을 남길 수
+              있습니다.
+            </p>
+            <p class="lead">
+              책을 전시하고 싶다면, 책 선반이나 책꽂이를 활용해보세요. 아름다운 책들을 전시함으로써
+              집 안에서 독서 분위기를 조성하고, 독서에 대한 열정을 더욱 키울 수 있습니다.
+            </p>
+          </div>
+          <div class="col-md-5">
+            <img
+              class="featurette-image img-fluid mx-auto"
+              data-src="holder.js/500x500/auto"
+              alt="500x500"
+              src="/image/writing.jpg"
+              data-holder-rendered="true"
+              style="width: 500px; height: 500px"
+            />
+          </div>
+        </div>
+
+        <hr class="featurette-divider" />
+
+        <!-- /END THE FEATURETTES -->
+      </div>
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <h1>Contact Us</h1>
+          <a href="http://pierpaolodidato.it">___출처_pierpaolodidato.it___</a>
+
+          <p class="lead">문의 사항이나 도움이 필요한 경우 언제든지 저희에게 연락해 주십시오.</p>
+
+          <form id="contact-form" method="post" action="" role="form">
+            <div class="controls">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="form_name">Name *</label>
+                    <input
+                      id="form_name"
+                      type="text"
+                      name="name"
+                      class="form-control"
+                      placeholder="이름 *"
+                      required="required"
+                      data-error="Firstname is required."
+                    />
+                    <div class="help-block with-errors"></div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="form_lastname">Surname *</label>
+                    <input
+                      id="form_lastname"
+                      type="text"
+                      name="surname"
+                      class="form-control"
+                      placeholder="성 *"
+                      required="required"
+                      data-error="Lastname is required."
+                    />
+                    <div class="help-block with-errors"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="form_email">Email *</label>
+                    <input
+                      id="form_email"
+                      type="email"
+                      name="email"
+                      class="form-control"
+                      placeholder="email *"
+                      required="required"
+                      data-error="Valid email is required."
+                    />
+                    <div class="help-block with-errors"></div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="form_phone">Telephone</label>
+                    <input
+                      id="form_phone"
+                      type="tel"
+                      name="phone"
+                      class="form-control"
+                      placeholder="TEL"
+                    />
+                    <div class="help-block with-errors"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="form_message">Message *</label>
+                <textarea
+                  id="form_message"
+                  name="message"
+                  class="form-control"
+                  placeholder="message*"
+                  rows="8"
+                  required="required"
+                  data-error="Please, leave us a message."
+                ></textarea>
+                <div class="help-block with-errors"></div>
+              </div>
+
+              <input type="submit" class="btn btn-primary btn-send" value="Send Message" />
+              <p class="text-muted"><strong>*</strong> 별표로 표시된 필드는 필수 항목입니다.</p>
+            </div>
+          </form>
+        </div>
+        <!-- /.8 -->
+      </div>
+    </div>
+  </body>
+  <footer th:replace="fragments/footer :: footer"></footer>
+</html>

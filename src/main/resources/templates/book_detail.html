@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/head :: head"></head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <body>
+    <nav th:replace="fragments/nav :: nav-index"></nav>
+
+    <div class="container-fluid mt-5">
+      <div class="row">
+        <div th:replace="fragments/categories :: categories"></div>
+        <div class="col"></div>
+        <div class="col-8" style="margin-right: 1cm">
+          <h2 class="display-3 mb-5">도서 상세보기</h2>
+          <div class="container px-4 px-lg-5 my-5">
+            <div class="row gx-4 gx-lg-5 align-items-center">
+              <div class="col-md-6">
+                <img
+                  class="card-img-top mb-5 mb-md-0"
+                  th:src="@{'/image/' + ${book.image}}"
+                  alt="..."
+                />
+              </div>
+              <div class="col-md-6">
+                <div class="small mb-1" th:text="'boo - '+${book.id}"></div>
+                <h1 class="display-5 fw-bolder" th:text="${book.name}"></h1>
+                <div class="fs-5 mb-5">
+                  <span
+                    class="text-decoration-line-through"
+                    th:text="'도서 금액    '+${book.price} + ' 원'"
+                  ></span>
+                </div>
+                <p class="lead">
+              <div th:utext="${book.description}" style="margin-top: 1rem"></div>
+                </p>
+                <div class="d-flex">
+                  <p>
+                  <a class="btn btn-outline-dark flex-shrink-0 addToCart" type="button" th:attr="data-id=${book.id}" th:href="@{'/cart/add/' + ${book.id}}">
+                    <i class="bi bi-cart-plus"></i>
+                    장바구니 추가
+                  </a>
+                  <a class="btn btn-outline-dark flex-shrink-0" type="button" th:href="@{${#httpServletRequest.getHeader('referer')} ?: '/'}">
+                    <i class="bi bi-back"></i>
+                    돌아가기
+                  </a>
+                </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr>
+
+          <h2>전체 리뷰</h2>
+          <h5
+            class="border-bottom my-3 py-2"
+            th:text="${#lists.size(book.replyList)+'개의 리뷰가 있습니다.'}"
+          ></h5>
+          <div class="card-body" th:each=" reply : ${book.replyList}">
+            <div class="card-body shadow" style="margin-bottom: 1rem;">
+              <div class="card-text" style="white-space: pre-line" th:text="${reply.content}"></div>
+              <div class="rating" th:if="${reply.rating != null}">
+                <span class="badge">
+                  <span th:each="i : ${#numbers.sequence(1, reply.rating)}" class="fa fa-star"></span>
+                </span>
+              </div>
+              
+              <div class="d-flex justify-content-end">
+                <div
+                  th:if="${reply.modifyDate != null}"
+                  class="badge bg-light text-dark p-2 text-start mx-3"
+                >
+                  <div class="mb-2">수정일자</div>
+                  <div th:text="${#temporals.format(reply.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+                <div class="badge bg-light text-dark p-2 text-start">
+                  <div class="mb-2">
+                    <span th:text="${reply.user.username}"></span>
+                  </div>
+                  <div th:text="${#temporals.format(reply.createdAt, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+              </div>
+              <div class="my-3">
+                <a
+                  th:href="@{|/replies/modify/${reply.id}|}"
+                  class="btn btn-sm btn-outline-info"
+                  sec:authorize="isAuthenticated()"
+                  th:if="${principal != null and principal == reply.user.username}"
+                  th:text="수정"
+                ></a>
+                <a
+                  href="javascript:void(0);"
+                  th:data-uri="@{|/replies/delete/${reply.id}|}"
+                  class="delete btn btn-sm btn-outline-danger"
+                  sec:authorize="isAuthenticated()"
+                  th:if="${principal != null and principal == reply.user.username}"
+                  th:text="삭제"
+                ></a>
+              </div>
+            </div>
+          </div>
+
+          <hr>
+          <h4>리뷰와 후기를 작성해보세요</h4>
+
+          <form
+            th:action="@{/replies/book/{id}(id=${book.id})}"
+            th:object="${replyForm}"
+            method="post"
+            class="my-3"
+          >
+            <textarea th:field="*{content}" rows="10" class="form-control"></textarea>
+            <div class="mb-3">
+              <label for="rating">별점을 남겨보세요</label>
+              <select class="form-select" id="rating" name="rating" th:field="*{rating}">
+                <option class="star_1 fa" value="1">&#xf005</option>
+              <option class="star_2" value="2">&#xf005 &#xf005</option>
+              <option class="star_3" value="3">&#xf005 &#xf005 &#xf005 </option>
+              <option class="star_4" value="4">&#xf005 &#xf005 &#xf005 &#xf005</option>
+              <option class="star_5" value="5">&#xf005 &#xf005 &#xf005 &#xf005 &#xf005</option>
+              </select>
+            </div>
+            <input type="submit" value="답변등록" class="btn btn-outline-success my-2" />
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <footer th:replace="fragments/footer :: footer"></footer>
+    <script>
+      $('a.addToCart').click(function (e) {
+        e.preventDefault();
+
+        let $this = $(this); //제이쿼리 변수선언 this는 장바구니버튼( a태그 객체 )
+
+        let id = $this.attr('data-id');
+        let url = '/cart/add/' + id;
+
+        $.get(url, {}, function (data) {
+          //console.log(data);
+          $('div.cart').html(data);
+        }).done(function () {
+          $this.parent().parent().find('div.productAdded').fadeIn();
+          $this.parent().parent().find('div.bookAdded').fadeIn();
+          setTimeout(() => {
+            $this.parent().parent().find('div.productAdded').fadeIn();
+            $this.parent().parent().find('div.bookAdded').fadeIn();
+          }, 1000);
+        });
+      });
+    </script>
+    <script>
+      const delete_elements = document.querySelectorAll('.delete');
+      delete_elements.forEach((element) => {
+        element.addEventListener('click', (e) => {
+          if (confirm('정말로 삭제하시겠습니까?')) {
+            location.href = e.target.dataset.uri; //태그의 dataset.uri값을 가져옴
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

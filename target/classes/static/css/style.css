@@ -1,0 +1,103 @@
+body {
+  background-color : white;
+}
+.page-heading{
+  margin-bottom: 20px;
+}
+a {
+  color: black;
+}
+div.productAdded {
+  position: absolute;
+  bottom: 5px;
+  left: 10em;
+}
+div.bookAdded {
+  position: absolute;
+  bottom: 5px;
+  left: 10em;
+}
+.hide {
+  display: none;
+}
+div.desc {
+  display:inline-block;
+  width:230px;
+  white-space: nowrap;
+  overflow: hidden; 
+  text-overflow: ellipsis;
+}
+.card {
+  height: calc(100% * 1.5);
+  margin-bottom: 20px;
+}
+.card-footer {
+  margin-top: 1rem;
+}
+.card-text {
+  max-height: 3.6em; /* 최대 높이 */
+  overflow: hidden;
+}
+
+.toggle-btn {
+  cursor: pointer;
+  color: blue;
+}
+
+.h5{
+  font-weight: bold;
+}
+
+.ck.ck-content {
+  height: 15em;
+}
+.ui-datepicker {
+  background-color: whitesmoke;
+  border: 1px solid black;
+}
+.card {
+  margin-bottom: 20px;
+}
+.card-img-top {
+  max-height: 200px;
+  object-fit: contain;
+}
+.span.bi.bi-people {
+  width: 40px;
+  height: 40px;
+}
+#wrapper {
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 100px; /* 푸터의 높이만큼 여백 추가 */
+}
+
+footer {
+  position: relative;
+  bottom: 0;
+  height: 100px; /* 푸터의 높이 */
+}
+.rating {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.rating .badge {
+  font-size: 1.2rem;
+  padding: 0.25rem 0.5rem;
+  margin-right: 0.5rem;
+  color: gold;
+  border: 1px solid darkgray; /* 테두리 스타일 추가 */
+}
+
+.form-select{width:180px; height:25px; margin:10px;font-family: "Font Awesome 5 Free"; font-weight:900; color: gold; border: 1px solid darkgray; /* 테두리 스타일 추가 */}
+
+.form-select option{font-family: "Font Awesome 5 Free"; font-weight:900; color: gold; border: 1px solid darkgray; /* 테두리 스타일 추가 */}
+
+#sidebar-wrapper .list-group {
+  width: 17rem;
+}
+.list-group-flush {
+  border-radius: 0;
+}
